@@ -14,5 +14,4 @@ import java.sql.SQLException;
 public class BaseService<T> {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
-
 }
