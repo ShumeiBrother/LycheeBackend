@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 
 @SpringBootApplication
+
 public class LycheeApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(LycheeApiApplication.class, args);

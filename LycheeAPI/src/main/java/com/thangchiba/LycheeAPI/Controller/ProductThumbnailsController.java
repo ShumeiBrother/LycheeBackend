@@ -15,7 +15,6 @@ import java.util.List;
 public class ProductThumbnailsController {
     @Autowired
     ProductThumbnailsService productThumbnailsService;
-
     @GetMapping("/product-thumbnails")
     @CrossOrigin
     public ResponseEntity<List<ProductThumbnail>> GetAllProductThumbnails() {
