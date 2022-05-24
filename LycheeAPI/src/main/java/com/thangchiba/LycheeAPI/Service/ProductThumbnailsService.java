@@ -10,18 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProductThumbnailsService extends BaseService<ProductThumbnail>{
-    private static String GET_PRODUCTS_THUMBNAIL = new StringBuilder()
-            .append("SELECT * FROM m_product ").toString();
+public class ProductThumbnailsService extends BaseService<ProductThumbnail> {
     protected RowMapper rowMapper = new BeanPropertyRowMapper<ProductThumbnail>(ProductThumbnail.class);
 
-    public List<ProductThumbnail> searchEarningInformation(Integer page, Integer quantity) {
+    private static String GET_PRODUCTS_THUMBNAIL = new StringBuilder()
+            .append("SELECT * " +
+                    "FROM M_PRODUCT ").toString();
+
+    public List<ProductThumbnail> getProductThumbnails() {
         try {
-            ArrayList<Object> param = new ArrayList<Object>();
-            //param[0] = "%" + "keyword" + "%";
-            param.add(page);
-            param.add(quantity);
-            // SQL実行
             List<ProductThumbnail> result = jdbcTemplate.query(GET_PRODUCTS_THUMBNAIL, rowMapper);
             return result;
         } catch (Exception e) {
@@ -29,5 +26,23 @@ public class ProductThumbnailsService extends BaseService<ProductThumbnail>{
             return null;
         }
     }
+
+    private static String GET_PRODUCTS_THUMBNAIL_BY_CATEGORY_ID = new StringBuilder()
+            .append("SELECT * " +
+                    "FROM M_PRODUCT " +
+                    "WHERE ? = ANY(LIST_CATEGORY_ID)").toString();
+
+    public List<ProductThumbnail> getProductThumbnails(String categoryId) {
+        try {
+            ArrayList<Object> params = new ArrayList<>();
+            params.add(categoryId);
+            List<ProductThumbnail> result = jdbcTemplate.query(GET_PRODUCTS_THUMBNAIL_BY_CATEGORY_ID, rowMapper, params.toArray());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }
