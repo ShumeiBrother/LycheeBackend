@@ -19,10 +19,10 @@ public class ProductThumbnailsController {
 
     @GetMapping("/product-thumbnails")
     @CrossOrigin
-    public ResponseEntity<List<ProductThumbnail>> GetAllProductThumbnails(@RequestParam(required = false) String categoryId) {
+    public ResponseEntity<List<ProductThumbnail>> GetAllProductThumbnails(@RequestParam(required = false) String categoryId,@RequestParam(required = false) String madeIn) {
         List<ProductThumbnail> result;
         if (categoryId != null) {
-            result = productThumbnailsService.getProductThumbnails(categoryId);
+            result = productThumbnailsService.getProductThumbnails(categoryId,madeIn);
         } else {
             result = productThumbnailsService.getProductThumbnails();
         }
