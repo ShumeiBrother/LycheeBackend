@@ -2,45 +2,50 @@ package com.thangchiba.LycheeAPI.Service;
 
 import com.thangchiba.LycheeAPI.Entity.Product;
 import com.thangchiba.LycheeAPI.Model.ProductThumbnail;
+import com.thangchiba.LycheeAPI.Request.GetProductThumbnailsRequest;
+import com.thangchiba.LycheeAPI.Response.GetProductThumbnailsResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductThumbnailsService extends BaseService<ProductThumbnail> {
-    protected RowMapper rowMapper = new BeanPropertyRowMapper<ProductThumbnail>(ProductThumbnail.class);
+public class ProductThumbnailsService extends BaseService<GetProductThumbnailsResponse> {
+    protected RowMapper rowMapper = new BeanPropertyRowMapper<GetProductThumbnailsResponse>(GetProductThumbnailsResponse.class);
 
-    private static String GET_PRODUCTS_THUMBNAIL = new StringBuilder()
-            .append("SELECT * " +
-                    "FROM M_PRODUCT ").toString();
-
-    public List<ProductThumbnail> getProductThumbnails() {
-        try {
-            List<ProductThumbnail> result = jdbcTemplate.query(GET_PRODUCTS_THUMBNAIL, rowMapper);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    public List<GetProductThumbnailsResponse> getProductThumbnails(GetProductThumbnailsRequest request) {
+        ArrayList<Object> params = new ArrayList<Object>();
+        String WHERE_CLAUSE = "";
+        if (request.getCategoryId() != null) {
+            WHERE_CLAUSE += " AND ? = ANY(MP.LIST_CATEGORY_ID) ";
+            params.add(request.getCategoryId());
         }
-    }
-
-    private static String GET_PRODUCTS_THUMBNAIL_BY_CATEGORY_ID = new StringBuilder()
-            .append("SELECT * " +
-                    "FROM M_PRODUCT " +
-                    "WHERE ? = ANY(LIST_CATEGORY_ID) " +
-                    "AND MADE_IN = ?").toString();
-
-    public List<ProductThumbnail> getProductThumbnails(String categoryId,String madeIn) {
+        String PAGINATING_QUERY = PaginatingQuery(request.getItemPerPage(), request.getPage());
+        String SQL_QUERY = "SELECT \n" +
+                "mp.product_id,\n" +
+                "mp.product_name,\n" +
+                "mp.size,\n" +
+                "mp.color,\n" +
+                "mp.description,\n" +
+                "mp.price,\n" +
+                "mp.product_point,\n" +
+                "mp.thumbnail_image,\n" +
+                "array_agg(mc.category_name)::character varying as LIST_CATEGORY_NAME\n" +
+                "FROM M_PRODUCT AS MP \n" +
+                "LEFT JOIN M_CATEGORY AS MC\n" +
+                "ON mc.category_id = ANY(mp.list_category_id)\n" +
+                "WHERE MP.DEL_FLG IS FALSE\n" +
+                WHERE_CLAUSE +
+                "GROUP BY product_id " +
+                PAGINATING_QUERY;
         try {
-            ArrayList<Object> params = new ArrayList<>();
-            params.add(categoryId);
-            params.add(madeIn);
-            List<ProductThumbnail> result = jdbcTemplate.query(GET_PRODUCTS_THUMBNAIL_BY_CATEGORY_ID, rowMapper, params.toArray());
+            List<GetProductThumbnailsResponse> result = jdbcTemplate.query(SQL_QUERY, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
