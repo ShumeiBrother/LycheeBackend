@@ -1,23 +1,17 @@
 package com.thangchiba.LycheeAPI.Service;
 
-import com.thangchiba.LycheeAPI.Entity.Product;
-import com.thangchiba.LycheeAPI.Model.ProductThumbnail;
 import com.thangchiba.LycheeAPI.Request.GetProductThumbnailsRequest;
 import com.thangchiba.LycheeAPI.Response.GetProductThumbnailsResponse;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class ProductThumbnailsService extends BaseService<GetProductThumbnailsResponse> {
-    protected RowMapper rowMapper = new BeanPropertyRowMapper<GetProductThumbnailsResponse>(GetProductThumbnailsResponse.class);
+    protected RowMapper<GetProductThumbnailsResponse> rowMapper = new BeanPropertyRowMapper<>(GetProductThumbnailsResponse.class);
 
     public List<GetProductThumbnailsResponse> getProductThumbnails(GetProductThumbnailsRequest request) {
         ArrayList<Object> params = new ArrayList<Object>();

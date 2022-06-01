@@ -1,6 +1,5 @@
 package com.thangchiba.LycheeAPI.Service;
 
-import com.thangchiba.LycheeAPI.Model.ProductThumbnail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +16,7 @@ public class BaseService<T> {
 
     protected String PaginatingQuery(Integer itemPerPage, Integer page) {
         if (itemPerPage != null && page != null) {
-            return " LIMIT " + itemPerPage + " OFFSET " + ((page - 1) * itemPerPage);
+            return " LIMIT " + itemPerPage + " OFFSET " + (page * itemPerPage);
         } else return "";
     }
 
