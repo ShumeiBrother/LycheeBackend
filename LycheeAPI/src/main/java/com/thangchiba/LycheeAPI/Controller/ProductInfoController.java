@@ -22,8 +22,8 @@ public class ProductInfoController {
 
     @GetMapping("/product")
     @CrossOrigin
-    public ResponseEntity<List<GetProductDetailInformationResponse>> GetProductDetailInformation(GetProductDetailInformationRequest request) {
-        List<GetProductDetailInformationResponse> result;
+    public ResponseEntity<GetProductDetailInformationResponse> GetProductDetailInformation(GetProductDetailInformationRequest request) {
+        GetProductDetailInformationResponse result;
         result = productInfoService.getProductDetailInformation(request);
         return ResponseEntity.ok(result);
     }
