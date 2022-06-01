@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductInfoService extends BaseService<GetProductDetailInformationResponse> {
     protected RowMapper rowMapper = new BeanPropertyRowMapper<GetProductDetailInformationResponse>(GetProductDetailInformationResponse.class);
 
-    public List<GetProductDetailInformationResponse> getProductDetailInformationResponse(GetProductDetailInformationRequest request){
+    public List<GetProductDetailInformationResponse> getProductDetailInformation(GetProductDetailInformationRequest request){
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(request.getProductId());
         String SQL_QUERY = "SELECT \n" +

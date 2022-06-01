@@ -24,7 +24,7 @@ public class ProductInfoController {
     @CrossOrigin
     public ResponseEntity<List<GetProductDetailInformationResponse>> GetProductDetailInformation(GetProductDetailInformationRequest request) {
         List<GetProductDetailInformationResponse> result;
-        result = productInfoService.getProductDetailInformationResponse(request);
+        result = productInfoService.getProductDetailInformation(request);
         return ResponseEntity.ok(result);
     }
 }
