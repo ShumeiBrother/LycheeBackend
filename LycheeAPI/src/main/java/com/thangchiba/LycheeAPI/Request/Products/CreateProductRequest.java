@@ -10,8 +10,6 @@ import java.util.Date;
 @Getter
 @Setter
 public class CreateProductRequest {
-
-    private String productId;
     @Nullable
     private String maker;
     @Nullable
@@ -32,8 +30,8 @@ public class CreateProductRequest {
     @Nullable
     private String thumbnailImage;
     @Nullable
-    private String listImage;
-    private ArrayList<String> listCategoryId;
+    private String[] listImage;
+    private String[] listCategoryId;
     @Nullable
     private Date expiry;
 }

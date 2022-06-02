@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @Component
@@ -67,8 +68,10 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
                 "list_image, \n" +
                 "list_category_id, \n" +
                 "expiry, \n" +
+                "del_flg, \n" +
                 "create_date) \n" +
                 "VALUES ( \n" +
+                "nextval('product_id_seq'), \n" +
                 "?, \n" +
                 "?, \n" +
                 "?, \n" +
@@ -84,14 +87,13 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
                 "?, \n" +
                 "?, \n" +
                 "?, \n" +
-                "2022-06-02)";
+                "?) RETURNING product_id";
         String SQL_QUERY = "SELECT product_id FROM m_product AS mp WHERE product_id = ?";
         try {
-            jdbcTemplate.update(SQL_INSERT_NEW_PRODUCT, request.getProductId(), request.getMaker(), request.getMadeIn(),
+            CreateProductResponse result = jdbcTemplate.queryForObject(SQL_INSERT_NEW_PRODUCT,rowMapper, request.getMaker(), request.getMadeIn(),
                     request.getProductName(), request.getSize(), request.getColor(), request.getDescription(),
                     request.getReceiptPrice(), request.getPrice(), request.getProductPoint(), request.getWeight(),
-                    request.getThumbnailImage(), request.getListImage(),request.getListCategoryId(), request.getExpiry());
-            CreateProductResponse result = jdbcTemplate.queryForObject(SQL_QUERY, rowMapper, request.getProductId());
+                    request.getThumbnailImage(), request.getListImage(),request.getListCategoryId(), request.getExpiry(),false,new Date());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
