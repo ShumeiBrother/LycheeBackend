@@ -1,4 +1,4 @@
-package com.thangchiba.LycheeAPI.Response;
+package com.thangchiba.LycheeAPI.Response.Products;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class GetProductDetailInformationResponse {
+public class GetProductDetailResponse {
     private String productId;
     @Nullable
     private String maker;

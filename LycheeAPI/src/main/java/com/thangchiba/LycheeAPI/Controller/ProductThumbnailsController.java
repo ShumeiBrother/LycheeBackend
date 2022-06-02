@@ -1,7 +1,7 @@
 package com.thangchiba.LycheeAPI.Controller;
 
-import com.thangchiba.LycheeAPI.Request.GetProductThumbnailsRequest;
-import com.thangchiba.LycheeAPI.Response.GetProductThumbnailsResponse;
+import com.thangchiba.LycheeAPI.Request.ProductThumbnails.GetProductThumbnailsRequest;
+import com.thangchiba.LycheeAPI.Response.ProductThumbnails.GetProductThumbnailsResponse;
 import com.thangchiba.LycheeAPI.Service.ProductThumbnailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

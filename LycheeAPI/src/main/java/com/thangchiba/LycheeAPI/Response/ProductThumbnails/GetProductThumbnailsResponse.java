@@ -1,4 +1,4 @@
-package com.thangchiba.LycheeAPI.Response;
+package com.thangchiba.LycheeAPI.Response.ProductThumbnails;
 
 import lombok.Getter;
 import lombok.Setter;

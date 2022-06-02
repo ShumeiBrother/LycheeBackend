@@ -1,7 +1,7 @@
 package com.thangchiba.LycheeAPI.Service;
 
-import com.thangchiba.LycheeAPI.Request.GetProductThumbnailsRequest;
-import com.thangchiba.LycheeAPI.Response.GetProductThumbnailsResponse;
+import com.thangchiba.LycheeAPI.Request.ProductThumbnails.GetProductThumbnailsRequest;
+import com.thangchiba.LycheeAPI.Response.ProductThumbnails.GetProductThumbnailsResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;

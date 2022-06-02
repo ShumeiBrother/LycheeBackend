@@ -1,4 +1,4 @@
-package com.thangchiba.LycheeAPI.Request;
+package com.thangchiba.LycheeAPI.Request.Products;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
