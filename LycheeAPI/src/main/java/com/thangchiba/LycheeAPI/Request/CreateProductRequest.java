@@ -1,17 +1,16 @@
-package com.thangchiba.LycheeAPI.Response;
-
+package com.thangchiba.LycheeAPI.Request;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 @Getter
 @Setter
-public class GetProductDetailInformationResponse {
+public class CreateProductRequest {
+
     private String productId;
     @Nullable
     private String maker;
@@ -34,6 +33,7 @@ public class GetProductDetailInformationResponse {
     private String thumbnailImage;
     @Nullable
     private String listImage;
-    private String listCategoryName;
+    private ArrayList<String> listCategoryId;
+    @Nullable
     private Date expiry;
 }
