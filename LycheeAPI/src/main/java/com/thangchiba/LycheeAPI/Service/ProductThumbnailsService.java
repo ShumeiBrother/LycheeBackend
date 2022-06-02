@@ -30,7 +30,7 @@ public class ProductThumbnailsService extends BaseService<GetProductThumbnailsRe
                 "mp.price,\n" +
                 "mp.product_point,\n" +
                 "mp.thumbnail_image,\n" +
-                "array_agg(mc.category_name)::character varying as LIST_CATEGORY_NAME\n" +
+                "array_agg(mc.category_name)::character varying[] as LIST_CATEGORY_NAME\n" +
                 "FROM M_PRODUCT AS MP \n" +
                 "LEFT JOIN M_CATEGORY AS MC\n" +
                 "ON mc.category_id = ANY(mp.list_category_id)\n" +

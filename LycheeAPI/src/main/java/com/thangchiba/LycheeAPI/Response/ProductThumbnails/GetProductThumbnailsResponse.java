@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Array;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,9 @@ public class GetProductThumbnailsResponse {
     private Long price;
     private Long productPoint;
     private String thumbnailImage;
-    private String listCategoryName;
+    public String[] getListCategoryName() throws SQLException {
+        return (String[])listCategoryName.getArray();
+    }
+    private java.sql.Array listCategoryName;
 }
 
