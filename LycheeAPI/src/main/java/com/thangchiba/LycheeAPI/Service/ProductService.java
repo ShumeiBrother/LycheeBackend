@@ -88,12 +88,25 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
                 "?, \n" +
                 "?, \n" +
                 "?) RETURNING product_id";
-        String SQL_QUERY = "SELECT product_id FROM m_product AS mp WHERE product_id = ?";
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(request.getMaker());
+        params.add(request.getMadeIn());
+        params.add(request.getProductName());
+        params.add(request.getSize());
+        params.add(request.getColor());
+        params.add(request.getDescription());
+        params.add(request.getReceiptPrice());
+        params.add(request.getPrice());
+        params.add(request.getProductPoint());
+        params.add(request.getWeight());
+        params.add(request.getThumbnailImage());
+        params.add(request.getListImage());
+        params.add(request.getListCategoryId());
+        params.add(request.getExpiry());
+        params.add(false);
+        params.add(new Date());
         try {
-            CreateProductResponse result = jdbcTemplate.queryForObject(SQL_INSERT_NEW_PRODUCT,rowMapper, request.getMaker(), request.getMadeIn(),
-                    request.getProductName(), request.getSize(), request.getColor(), request.getDescription(),
-                    request.getReceiptPrice(), request.getPrice(), request.getProductPoint(), request.getWeight(),
-                    request.getThumbnailImage(), request.getListImage(),request.getListCategoryId(), request.getExpiry(),false,new Date());
+            CreateProductResponse result = jdbcTemplate.queryForObject(SQL_INSERT_NEW_PRODUCT,rowMapper,params.toArray());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
