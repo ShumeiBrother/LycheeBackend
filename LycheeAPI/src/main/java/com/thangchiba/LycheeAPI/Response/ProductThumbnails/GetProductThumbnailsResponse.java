@@ -20,9 +20,9 @@ public class GetProductThumbnailsResponse {
     private Long price;
     private Long productPoint;
     private String thumbnailImage;
-    public String[] getListCategoryName() throws SQLException {
-        return (String[])listCategoryName.getArray();
+    public void setListCategoryName(Array listCategoryName) throws SQLException {
+        this.listCategoryName = (String[])listCategoryName.getArray();
     }
-    private java.sql.Array listCategoryName;
+    private String[] listCategoryName;
 }
 
