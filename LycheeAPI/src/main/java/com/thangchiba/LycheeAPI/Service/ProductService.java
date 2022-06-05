@@ -1,9 +1,13 @@
 package com.thangchiba.LycheeAPI.Service;
 
 import com.thangchiba.LycheeAPI.Request.Products.CreateProductRequest;
+import com.thangchiba.LycheeAPI.Request.Products.DeleteProductRequest;
 import com.thangchiba.LycheeAPI.Request.Products.GetProductDetailRequest;
+import com.thangchiba.LycheeAPI.Request.Products.UpdateProductRequest;
 import com.thangchiba.LycheeAPI.Response.Products.CreateProductResponse;
+import com.thangchiba.LycheeAPI.Response.Products.DeleteProductResponse;
 import com.thangchiba.LycheeAPI.Response.Products.GetProductDetailResponse;
+import com.thangchiba.LycheeAPI.Response.Products.UpdateProductResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,7 +19,7 @@ import java.util.Date;
 @Component
 public class ProductService extends BaseService<GetProductDetailResponse> {
 
-    public GetProductDetailResponse getProductDetailInformation(GetProductDetailRequest request){
+    public GetProductDetailResponse getProductDetailInformation(GetProductDetailRequest request) {
         RowMapper<GetProductDetailResponse> rowMapper = new BeanPropertyRowMapper<>(GetProductDetailResponse.class);
         ArrayList<Object> params = new ArrayList<>();
         params.add(request.getProductId());
@@ -43,7 +47,7 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
         try {
             GetProductDetailResponse result = jdbcTemplate.queryForObject(SQL_QUERY, rowMapper, params.toArray());
             return result;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -106,7 +110,76 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
         params.add(false);
         params.add(new Date());
         try {
-            CreateProductResponse result = jdbcTemplate.queryForObject(SQL_INSERT_NEW_PRODUCT,rowMapper,params.toArray());
+            CreateProductResponse result = jdbcTemplate.queryForObject(SQL_INSERT_NEW_PRODUCT, rowMapper, params.toArray());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public UpdateProductResponse updateProductResponse(UpdateProductRequest request) {
+        RowMapper<UpdateProductResponse> rowMapper = new BeanPropertyRowMapper<>(UpdateProductResponse.class);
+        String SQL_UPDATE_PRODUCT = "UPDATE \n" +
+                "m_product \n" +
+                "SET \n" +
+                "maker = ?, \n" +
+                "made_in = ?, \n" +
+                "product_name = ?, \n" +
+                "size = ?, \n" +
+                "color = ?, \n" +
+                "description = ?, \n" +
+                "receipt_price = ?, \n" +
+                "price = ?, \n" +
+                "product_point = ?, \n" +
+                "weight = ?, \n" +
+                "thumbnail_image = ?, \n" +
+                "list_image = ?, \n" +
+                "list_category_id = ?, \n" +
+                "expiry = ?,\n" +
+                "update_date = ? \n" +
+                "WHERE product_id = ?\n" +
+                "RETURNING product_id";
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(request.getMaker());
+        params.add(request.getMadeIn());
+        params.add(request.getProductName());
+        params.add(request.getSize());
+        params.add(request.getColor());
+        params.add(request.getDescription());
+        params.add(request.getReceiptPrice());
+        params.add(request.getPrice());
+        params.add(request.getProductPoint());
+        params.add(request.getWeight());
+        params.add(request.getThumbnailImage());
+        params.add(request.getListImage());
+        params.add(request.getListCategoryId());
+        params.add(request.getExpiry());
+        params.add(new Date());
+        params.add(request.getProductId());
+
+        try {
+            UpdateProductResponse result = jdbcTemplate.queryForObject(SQL_UPDATE_PRODUCT, rowMapper, params.toArray());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public DeleteProductResponse deleteProductResponse(DeleteProductRequest request) {
+        RowMapper<DeleteProductResponse> rowMapper = new BeanPropertyRowMapper<>(DeleteProductResponse.class);
+        String SQL_DELETE_PRODUCT = "update\n" +
+                "M_PRODUCT\n" +
+                "set \n" +
+                "DEL_FLG = true\n" +
+                "where\n" +
+                "PRODUCT_ID = ?\n" +
+                "returning PRODUCT_ID";
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(request.getProductId());
+        try {
+            DeleteProductResponse result = jdbcTemplate.queryForObject(SQL_DELETE_PRODUCT, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
