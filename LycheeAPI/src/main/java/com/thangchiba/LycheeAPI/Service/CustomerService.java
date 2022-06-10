@@ -2,9 +2,11 @@ package com.thangchiba.LycheeAPI.Service;
 
 import com.thangchiba.LycheeAPI.Request.Customers.CreateCustomerRequest;
 import com.thangchiba.LycheeAPI.Request.Customers.DeleteCustomerRequest;
+import com.thangchiba.LycheeAPI.Request.Customers.GetCustomerInfoRequest;
 import com.thangchiba.LycheeAPI.Request.Customers.UpdateCustomerInfoRequest;
 import com.thangchiba.LycheeAPI.Response.Customers.CreateCustomerResponse;
 import com.thangchiba.LycheeAPI.Response.Customers.DeleteCustomerResponse;
+import com.thangchiba.LycheeAPI.Response.Customers.GetCustomerInfoResponse;
 import com.thangchiba.LycheeAPI.Response.Customers.UpdateCustomerInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -77,7 +79,7 @@ public class CustomerService extends BaseService<CreateCustomerResponse> {
         }
     }
 
-    public DeleteCustomerResponse deleteCustomer(DeleteCustomerRequest request){
+    public DeleteCustomerResponse deleteCustomer(DeleteCustomerRequest request) {
         RowMapper<DeleteCustomerResponse> rowMapper = new BeanPropertyRowMapper<>(DeleteCustomerResponse.class);
         ArrayList<Object> params = new ArrayList<>();
         String SQL_DELETE_CUSTOMER = "UPDATE\n" +
@@ -97,7 +99,7 @@ public class CustomerService extends BaseService<CreateCustomerResponse> {
         }
     }
 
-    public UpdateCustomerInfoResponse updateCustomerInfo(UpdateCustomerInfoRequest request){
+    public UpdateCustomerInfoResponse updateCustomerInfo(UpdateCustomerInfoRequest request) {
         RowMapper<UpdateCustomerInfoResponse> rowMapper = new BeanPropertyRowMapper<>(UpdateCustomerInfoResponse.class);
         ArrayList<Object> params = new ArrayList<>();
         String SQL_UPDATE_CUSTOMER_INFO = "UPDATE\n" +
@@ -127,6 +129,40 @@ public class CustomerService extends BaseService<CreateCustomerResponse> {
         params.add(request.getCustomerId());
         try {
             UpdateCustomerInfoResponse result = jdbcTemplate.queryForObject(SQL_UPDATE_CUSTOMER_INFO, rowMapper, params.toArray());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public GetCustomerInfoResponse getCustomerInfo(GetCustomerInfoRequest request) {
+        RowMapper<GetCustomerInfoResponse> rowMapper = new BeanPropertyRowMapper<>(GetCustomerInfoResponse.class);
+        ArrayList<Object> params = new ArrayList<>();
+        String SQL_GET_CUSTOMER_INFO = "SELECT\n" +
+                "\tCUSTOMER_ID,\n" +
+                "\tCUSTOMER_NAME,\n" +
+                "\tPHONE_NUMBER,\n" +
+                "\tMAIL_ADDRESS,\n" +
+                "\tZIP_CODE,\n" +
+                "\tPREFECTURE,\n" +
+                "\tADDRESS,\n" +
+                "\tCOUNT_BUY_TIME,\n" +
+                "\tTOTAL_MONEY_USED,\n" +
+                "\tCUSTOMER_POINT,\n" +
+                "\tCUSTOMER_TYPE_ID,\n" +
+                "\tFACEBOOK,\n" +
+                "\tCART,\n" +
+                "\tLAST_LOGIN,\n" +
+                "\tLAST_UPDATE_PROFILE\n" +
+                "FROM\n" +
+                "\tM_CUSTOMER MC\n" +
+                "WHERE\n" +
+                "\tCUSTOMER_ID = ?\n" +
+                "\tAND DEL_FLG IS FALSE";
+        params.add(request.getCustomerId());
+        try {
+            GetCustomerInfoResponse result = jdbcTemplate.queryForObject(SQL_GET_CUSTOMER_INFO, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
