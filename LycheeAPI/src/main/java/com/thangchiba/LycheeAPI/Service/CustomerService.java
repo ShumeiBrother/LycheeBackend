@@ -2,8 +2,10 @@ package com.thangchiba.LycheeAPI.Service;
 
 import com.thangchiba.LycheeAPI.Request.Customers.CreateCustomerRequest;
 import com.thangchiba.LycheeAPI.Request.Customers.DeleteCustomerRequest;
+import com.thangchiba.LycheeAPI.Request.Customers.UpdateCustomerInfoRequest;
 import com.thangchiba.LycheeAPI.Response.Customers.CreateCustomerResponse;
 import com.thangchiba.LycheeAPI.Response.Customers.DeleteCustomerResponse;
+import com.thangchiba.LycheeAPI.Response.Customers.UpdateCustomerInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -79,14 +81,52 @@ public class CustomerService extends BaseService<CreateCustomerResponse> {
         RowMapper<DeleteCustomerResponse> rowMapper = new BeanPropertyRowMapper<>(DeleteCustomerResponse.class);
         ArrayList<Object> params = new ArrayList<>();
         String SQL_DELETE_CUSTOMER = "UPDATE\n" +
-                "M_CUSTOMER\n" +
+                "\tM_CUSTOMER\n" +
                 "SET\n" +
-                "DEL_FLG = TRUE\n" +
+                "\tDEL_FLG = TRUE\n" +
                 "WHERE\n" +
-                "CUSTOMER_ID = ? RETURNING CUSTOMER_ID";
+                "\tCUSTOMER_ID = ?\n" +
+                "\tAND DEL_FLG IS FALSE RETURNING CUSTOMER_ID\n";
         params.add(request.getCustomerId());
         try {
             DeleteCustomerResponse result = jdbcTemplate.queryForObject(SQL_DELETE_CUSTOMER, rowMapper, params.toArray());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public UpdateCustomerInfoResponse updateCustomerInfo(UpdateCustomerInfoRequest request){
+        RowMapper<UpdateCustomerInfoResponse> rowMapper = new BeanPropertyRowMapper<>(UpdateCustomerInfoResponse.class);
+        ArrayList<Object> params = new ArrayList<>();
+        String SQL_UPDATE_CUSTOMER_INFO = "UPDATE\n" +
+                "\tM_CUSTOMER\n" +
+                "SET\n" +
+                "\tCUSTOMER_NAME = ?,\n" +
+                "\tPHONE_NUMBER = ?,\n" +
+                "\tMAIL_ADDRESS = ?,\n" +
+                "\tZIP_CODE = ?,\n" +
+                "\tPREFECTURE = ?,\n" +
+                "\tADDRESS = ?,\n" +
+                "\tFACEBOOK = ?,\n" +
+                "\tLAST_UPDATE_PROFILE = ?,\n" +
+                "\tUPDATE_DATE = ?\n" +
+                "WHERE\n" +
+                "\tCUSTOMER_ID = ?\n" +
+                "\tAND DEL_FLG IS FALSE RETURNING CUSTOMER_ID\n";
+        params.add(request.getCustomerName());
+        params.add(request.getPhoneNumber());
+        params.add(request.getMailAddress());
+        params.add(request.getZipCode());
+        params.add(request.getPrefecture());
+        params.add(request.getAddress());
+        params.add(request.getFacebook());
+        params.add(new Date());
+        params.add(new Date());
+        params.add(request.getCustomerId());
+        try {
+            UpdateCustomerInfoResponse result = jdbcTemplate.queryForObject(SQL_UPDATE_CUSTOMER_INFO, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
