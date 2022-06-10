@@ -1,7 +1,9 @@
 package com.thangchiba.LycheeAPI.Service;
 
 import com.thangchiba.LycheeAPI.Request.Customers.CreateCustomerRequest;
+import com.thangchiba.LycheeAPI.Request.Customers.DeleteCustomerRequest;
 import com.thangchiba.LycheeAPI.Response.Customers.CreateCustomerResponse;
+import com.thangchiba.LycheeAPI.Response.Customers.DeleteCustomerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -66,6 +68,25 @@ public class CustomerService extends BaseService<CreateCustomerResponse> {
         params.add(false);
         try {
             CreateCustomerResponse result = jdbcTemplate.queryForObject(SQL_CREATE_CUSTOMER, rowMapper, params.toArray());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public DeleteCustomerResponse deleteCustomer(DeleteCustomerRequest request){
+        RowMapper<DeleteCustomerResponse> rowMapper = new BeanPropertyRowMapper<>(DeleteCustomerResponse.class);
+        ArrayList<Object> params = new ArrayList<>();
+        String SQL_DELETE_CUSTOMER = "UPDATE\n" +
+                "M_CUSTOMER\n" +
+                "SET\n" +
+                "DEL_FLG = TRUE\n" +
+                "WHERE\n" +
+                "CUSTOMER_ID = ? RETURNING CUSTOMER_ID";
+        params.add(request.getCustomerId());
+        try {
+            DeleteCustomerResponse result = jdbcTemplate.queryForObject(SQL_DELETE_CUSTOMER, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
             e.printStackTrace();

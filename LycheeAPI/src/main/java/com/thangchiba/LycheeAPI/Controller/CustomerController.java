@@ -1,6 +1,8 @@
 package com.thangchiba.LycheeAPI.Controller;
 import com.thangchiba.LycheeAPI.Request.Customers.CreateCustomerRequest;
+import com.thangchiba.LycheeAPI.Request.Customers.DeleteCustomerRequest;
 import com.thangchiba.LycheeAPI.Response.Customers.CreateCustomerResponse;
+import com.thangchiba.LycheeAPI.Response.Customers.DeleteCustomerResponse;
 import com.thangchiba.LycheeAPI.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,13 @@ public class CustomerController {
     public ResponseEntity<CreateCustomerResponse> CreateCustomer(@RequestBody CreateCustomerRequest request){
         CreateCustomerResponse result;
         result = customerService.createCustomer(request);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<DeleteCustomerResponse> DeleteCustomer(@RequestBody DeleteCustomerRequest request){
+        DeleteCustomerResponse result;
+        result = customerService.deleteCustomer(request);
         return ResponseEntity.ok(result);
     }
 }
