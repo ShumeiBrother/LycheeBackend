@@ -1,5 +1,6 @@
 package com.thangchiba.LycheeAPI.Service;
 
+import com.thangchiba.LycheeAPI.Configuration.Exception.APIException;
 import com.thangchiba.LycheeAPI.Request.ProductThumbnails.GetProductThumbnailsRequest;
 import com.thangchiba.LycheeAPI.Response.ProductThumbnails.GetProductThumbnailsResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ProductThumbnailsService extends BaseService<GetProductThumbnailsResponse> {
     protected RowMapper<GetProductThumbnailsResponse> rowMapper = new BeanPropertyRowMapper<>(GetProductThumbnailsResponse.class);
 
-    public List<GetProductThumbnailsResponse> getProductThumbnails(GetProductThumbnailsRequest request) {
+    public List<GetProductThumbnailsResponse> getProductThumbnails(GetProductThumbnailsRequest request) throws Exception {
         ArrayList<Object> params = new ArrayList<Object>();
         String WHERE_CLAUSE = "";
         if (request.getCategoryId() != null) {
@@ -38,13 +39,11 @@ public class ProductThumbnailsService extends BaseService<GetProductThumbnailsRe
                 WHERE_CLAUSE +
                 "GROUP BY product_id " +
                 PAGINATING_QUERY;
-        try {
-            List<GetProductThumbnailsResponse> result = jdbcTemplate.query(SQL_QUERY, rowMapper, params.toArray());
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        List<GetProductThumbnailsResponse> result = jdbcTemplate.query(SQL_QUERY, rowMapper, params.toArray());
+
+        if(result.size()==0) throw new APIException("Không tìm đc sản phẩm nào");
+
+        return result;
     }
 
 
