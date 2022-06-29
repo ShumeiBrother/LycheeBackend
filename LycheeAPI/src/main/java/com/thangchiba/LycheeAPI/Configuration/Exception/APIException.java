@@ -20,8 +20,6 @@ public class APIException extends Exception{
         this.errorDetail = errorDetail;
     }
 
-
-
     public APIException(String message, Throwable cause) {
         super(message, cause);
     }

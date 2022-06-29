@@ -1,5 +1,6 @@
 package com.thangchiba.LycheeAPI.Service;
 
+import com.thangchiba.LycheeAPI.Configuration.Exception.APIException;
 import com.thangchiba.LycheeAPI.Request.Products.CreateProductRequest;
 import com.thangchiba.LycheeAPI.Request.Products.DeleteProductRequest;
 import com.thangchiba.LycheeAPI.Request.Products.GetProductDetailRequest;
@@ -19,7 +20,7 @@ import java.util.Date;
 @Component
 public class ProductService extends BaseService<GetProductDetailResponse> {
 
-    public GetProductDetailResponse getProductDetailInformation(GetProductDetailRequest request) {
+    public GetProductDetailResponse GetProductDetailInformation(GetProductDetailRequest request) throws APIException {
         RowMapper<GetProductDetailResponse> rowMapper = new BeanPropertyRowMapper<>(GetProductDetailResponse.class);
         ArrayList<Object> params = new ArrayList<>();
         params.add(request.getProductId());
@@ -44,16 +45,12 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
                 "ON mc.category_id = ANY(mp.list_category_id) \n" +
                 "WHERE mp.del_flg IS FALSE AND mp.product_id = ? \n" +
                 "GROUP BY mp.product_id";
-        try {
-            GetProductDetailResponse result = jdbcTemplate.queryForObject(SQL_QUERY, rowMapper, params.toArray());
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        GetProductDetailResponse result = jdbcTemplate.queryForObject(SQL_QUERY, rowMapper, params.toArray());
+        if (result == null) throw new APIException("商品を見つからなかった");
+        return result;
     }
 
-    public CreateProductResponse createProduct(CreateProductRequest request) {
+    public CreateProductResponse CreateProduct(CreateProductRequest request) throws APIException {
         RowMapper<CreateProductResponse> rowMapper = new BeanPropertyRowMapper<>(CreateProductResponse.class);
         String SQL_INSERT_NEW_PRODUCT = "INSERT INTO \n" +
                 "m_product " +
@@ -113,12 +110,11 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
             CreateProductResponse result = jdbcTemplate.queryForObject(SQL_INSERT_NEW_PRODUCT, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new APIException("商品を登録できなかった");
         }
     }
 
-    public UpdateProductResponse updateProductResponse(UpdateProductRequest request) {
+    public UpdateProductResponse UpdateProductResponse(UpdateProductRequest request) throws APIException {
         RowMapper<UpdateProductResponse> rowMapper = new BeanPropertyRowMapper<>(UpdateProductResponse.class);
         String SQL_UPDATE_PRODUCT = "UPDATE \n" +
                 "m_product \n" +
@@ -162,12 +158,11 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
             UpdateProductResponse result = jdbcTemplate.queryForObject(SQL_UPDATE_PRODUCT, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new APIException("商品を更新できなかった");
         }
     }
 
-    public DeleteProductResponse deleteProductResponse(DeleteProductRequest request) {
+    public DeleteProductResponse DeleteProductResponse(DeleteProductRequest request) throws APIException {
         RowMapper<DeleteProductResponse> rowMapper = new BeanPropertyRowMapper<>(DeleteProductResponse.class);
         String SQL_DELETE_PRODUCT = "update\n" +
                 "M_PRODUCT\n" +
@@ -182,8 +177,7 @@ public class ProductService extends BaseService<GetProductDetailResponse> {
             DeleteProductResponse result = jdbcTemplate.queryForObject(SQL_DELETE_PRODUCT, rowMapper, params.toArray());
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new APIException("商品を削除できなかった");
         }
     }
 }

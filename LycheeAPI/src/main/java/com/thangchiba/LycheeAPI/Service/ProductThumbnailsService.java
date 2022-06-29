@@ -3,11 +3,13 @@ package com.thangchiba.LycheeAPI.Service;
 import com.thangchiba.LycheeAPI.Configuration.Exception.APIException;
 import com.thangchiba.LycheeAPI.Request.ProductThumbnails.GetProductThumbnailsRequest;
 import com.thangchiba.LycheeAPI.Response.ProductThumbnails.GetProductThumbnailsResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -41,7 +43,7 @@ public class ProductThumbnailsService extends BaseService<GetProductThumbnailsRe
                 PAGINATING_QUERY;
         List<GetProductThumbnailsResponse> result = jdbcTemplate.query(SQL_QUERY, rowMapper, params.toArray());
 
-        if(result.size()==0) throw new APIException("Không tìm đc sản phẩm nào");
+//        if(result.size()==0) throw new APIException("商品を見つからなかった");
 
         return result;
     }

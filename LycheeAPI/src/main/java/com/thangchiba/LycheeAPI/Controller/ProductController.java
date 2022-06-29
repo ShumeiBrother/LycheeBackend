@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/product")
@@ -21,31 +23,30 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    @CrossOrigin
-    public ResponseEntity<GetProductDetailResponse> GetProductDetailInformation(GetProductDetailRequest request) {
+    public ResponseEntity<GetProductDetailResponse> GetProductDetailInformation(@Valid GetProductDetailRequest request) throws Exception{
         GetProductDetailResponse result;
-        result = productService.getProductDetailInformation(request);
+        result = productService.GetProductDetailInformation(request);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping
-    public ResponseEntity<CreateProductResponse> createProduct(@RequestBody CreateProductRequest request) {
+    public ResponseEntity<CreateProductResponse> CreateProduct(@Valid @RequestBody CreateProductRequest request) throws Exception{
         CreateProductResponse result;
-        result = productService.createProduct(request);
+        result = productService.CreateProduct(request);
         return ResponseEntity.ok(result);
     }
 
     @PutMapping
-    public ResponseEntity<UpdateProductResponse> UpdateProductInfo(@RequestBody UpdateProductRequest request){
+    public ResponseEntity<UpdateProductResponse> UpdateProductInfo(@Valid @RequestBody UpdateProductRequest request) throws Exception{
         UpdateProductResponse result;
-        result = productService.updateProductResponse(request);
+        result = productService.UpdateProductResponse(request);
         return ResponseEntity.ok(result);
     }
 
     @DeleteMapping
-    public ResponseEntity<DeleteProductResponse> DeleteProduct(@RequestBody DeleteProductRequest request){
+    public ResponseEntity<DeleteProductResponse> DeleteProduct(@Valid @RequestBody DeleteProductRequest request) throws Exception{
         DeleteProductResponse result;
-        result = productService.deleteProductResponse(request);
+        result = productService.DeleteProductResponse(request);
         return ResponseEntity.ok(result);
     }
 }

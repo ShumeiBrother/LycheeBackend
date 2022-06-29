@@ -16,9 +16,9 @@ public class GetProductThumbnailsRequest {
     private Integer fromPrice;
     private Integer toPrice;
     private String orderBy;
-    @Min(value=10,message = "Giá trị nhập vào phải lớn hơn 10")
+    @Min(value=10,message = "ページの表示対象数は10より大き")
     private Integer itemPerPage;
-    @Max(10)
+    @Min(0)
     private Integer page;
 }
 

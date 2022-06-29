@@ -1,37 +1,32 @@
 package com.thangchiba.LycheeAPI.Request.Products;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
 
 
-@Getter
-@Setter
+@Data
 public class CreateProductRequest {
-    @Nullable
     private String maker;
-    @Nullable
     private String madeIn;
     private String productName;
-    @Nullable
     private String size;
-    @Nullable
     private String color;
-    @Nullable
     private String description;
     private Integer receiptPrice;
+    @Min(value = 0,message = "価格は０より大き")
     private Integer price;
-    @Nullable
     private Integer productPoint;
-    @Nullable
+    @Min(value = 0,message = "重量は０より大き")
     private Integer weight;
-    @Nullable
     private String thumbnailImage;
-    @Nullable
     private String[] listImage;
     private String[] listCategoryId;
-    @Nullable
     private Date expiry;
 }
